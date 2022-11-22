@@ -189,19 +189,6 @@ abstract class Zend_Pdf_Cmap
     }
 
 
-  /* Abstract Methods */
-
-    /**
-     * Object constructor
-     *
-     * Parses the raw binary table data. Throws an exception if the table is
-     * malformed.
-     *
-     * @param string $cmapData Raw binary cmap table data.
-     * @throws Zend_Pdf_Exception
-     */
-    abstract public function __construct($cmapData);
-
     /**
      * Returns an array of glyph numbers corresponding to the Unicode characters.
      *

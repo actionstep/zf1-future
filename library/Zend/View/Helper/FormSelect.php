@@ -135,7 +135,7 @@ class Zend_View_Helper_FormSelect extends Zend_View_Helper_FormElement
                 }
                 $opt_id = ' id="' . $this->view->escape($id) . '-optgroup-'
                         . $this->view->escape($opt_value) . '"';
-                $list[] = '<optgroup'
+                $list[] = '<optgroup value="0"'  // custom hack for IE10 support
                         . $opt_disable
                         . $opt_id
                         . ' label="' . $this->view->escape($opt_value) .'">';
@@ -177,7 +177,8 @@ class Zend_View_Helper_FormSelect extends Zend_View_Helper_FormElement
 
 
         $opt = '<option'
-             . ' value="' . $this->view->escape($value) . '"';
+             . ' value="' . $this->view->escape($value) . '"'
+             . ' label="' . $this->view->escape($label) . '"'; // Custom Hack, add Label
 
              if ($class) {
              $opt .= ' class="' . $class . '"';

@@ -464,6 +464,8 @@ class Zend_Form_Decorator_FormErrors extends Zend_Form_Decorator_Abstract
             }
         }
 
+        $label = strip_tags($label);
+        
         if ($this->getEscape()) {
             $label = $view->escape($label);
         }

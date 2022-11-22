@@ -145,22 +145,12 @@ abstract class Zend_Mail_Storage_Abstract implements Countable, ArrayAccess, See
     abstract public function getRawContent($id, $part = null);
 
     /**
-     * Create instance with parameters
-     *
-     * @param  array $params mail reader specific parameters
-     * @throws Zend_Mail_Storage_Exception
-     */
-    abstract public function __construct($params);
-
-
-    /**
      * Destructor calls close() and therefore closes the resource.
      */
     public function __destruct()
     {
         $this->close();
     }
-
 
     /**
      * Close resource for mail lib. If you need to control, when the resource

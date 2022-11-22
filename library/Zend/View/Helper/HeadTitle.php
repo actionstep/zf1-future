@@ -217,6 +217,6 @@ class Zend_View_Helper_HeadTitle extends Zend_View_Helper_Placeholder_Container_
 
         $output = ($this->_autoEscape) ? $this->_escape($output) : $output;
 
-        return $indent . '<title>' . $output . '</title>';
+        return $indent . '<title data-heap-redact-text="true">' . $output . '</title>';
     }
 }

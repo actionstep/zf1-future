@@ -296,12 +296,24 @@ class Zend_Http_Client_Adapter_Proxy extends Zend_Http_Client_Adapter_Socket
 
         // If all is good, switch socket to secure mode. We have to fall back
         // through the different modes
+    
+        /**
+         * Lance: Update to use TLS 1.2
+         */
         $modes = array(
+            STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT,
             STREAM_CRYPTO_METHOD_TLS_CLIENT,
-            STREAM_CRYPTO_METHOD_SSLv3_CLIENT,
-            STREAM_CRYPTO_METHOD_SSLv23_CLIENT,
-            STREAM_CRYPTO_METHOD_SSLv2_CLIENT
+            STREAM_CRYPTO_METHOD_SSLv3_CLIENT
         );
+    
+        /**
+         * Lance: Set verify peer etc to false, otherwise proxy calls will always fail.
+         * Was defaulted to false in PHP when this library was created, but since php 5.6 it is enabled by default, so needs hack to fix.
+         * @see https://stackoverflow.com/questions/33497040/zend-unable-to-connect-to-https-server-through-proxy
+         */
+        stream_context_set_option($this->socket, "ssl", "verify_peer", false);
+        stream_context_set_option($this->socket, "ssl", "verify_peer_name", false);
+        stream_context_set_option($this->socket, "ssl", "allow_self_signed", false);
 
         $success = false;
         foreach($modes as $mode) {

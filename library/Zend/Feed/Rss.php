@@ -379,7 +379,7 @@ class Zend_Feed_Rss extends Zend_Feed_Abstract
      *
      * The following nodes are constructed for each feed entry
      * <item>
-     *    <title>entry title</title>
+     *    <title data-heap-redact-text="true">entry title</title>
      *    <link>url to feed entry</link>
      *    <guid>url to feed entry</guid>
      *    <description>short text</description>

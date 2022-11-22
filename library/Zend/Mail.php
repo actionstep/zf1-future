@@ -578,8 +578,12 @@ class Zend_Mail extends Zend_Mime_Message
         }
 
         foreach ($email as $n => $recipient) {
-            $this->_addRecipientAndHeader('To', $recipient, is_int($n) ? '' : $n);
-            $this->_to[] = $recipient;
+            // Custom hack - trim recipient and check for empty
+            $recipient = trim($recipient);
+            if (!empty($recipient)) {
+                $this->_addRecipientAndHeader('To', $recipient, is_int($n) ? '' : $n);
+                $this->_to[] = $recipient;
+            }
         }
 
         return $this;
