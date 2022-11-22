@@ -785,7 +785,7 @@ abstract class Zend_Controller_Action implements Zend_Controller_Action_Interfac
     /**
      * Redirect to another URL
      *
-     * Proxies to @see Zend_Controller_Action_Helper_Redirector::gotoUrl()
+     * Proxies to {@link Zend_Controller_Action_Helper_Redirector::gotoUrl()}.
      *
      * @param string $url
      * @param array $options Options to be used when redirecting
