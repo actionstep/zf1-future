@@ -115,6 +115,10 @@ class Zend_Loader_Autoloader
     {
         $self = self::getInstance();
 
+        if (strpos($class, "Google") !== false && defined('USE_MONO_GOOGLE') && USE_MONO_GOOGLE === 1) {
+            return false;
+        }
+        
         foreach ($self->getClassAutoloaders($class) as $autoloader) {
             if ($autoloader instanceof Zend_Loader_Autoloader_Interface) {
                 if ($autoloader->autoload($class)) {

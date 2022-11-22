@@ -2077,7 +2077,7 @@ class Zend_Form implements Iterator, Countable, Zend_Validate_Interface
      * @param  array $values
      * @return Zend_Form
      */
-    public function populate(array $values)
+    public function populate(array $values=[])
     {
         return $this->setDefaults($values);
     }
@@ -2981,7 +2981,7 @@ class Zend_Form implements Iterator, Countable, Zend_Validate_Interface
      * @param  Zend_View_Interface $view
      * @return string
      */
-    public function render(Zend_View_Interface $view = null)
+    public function render($view = null)
     {
         if (null !== $view) {
             $this->setView($view);
