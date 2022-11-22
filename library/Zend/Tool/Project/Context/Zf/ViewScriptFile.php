@@ -148,7 +148,7 @@ class Zend_Tool_Project_Context_Zf_ViewScriptFile extends Zend_Tool_Project_Cont
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Zend Framework Default Application</title>
+  <title data-heap-redact-text="true">Zend Framework Default Application</title>
 </head>
 <body>
   <h1>An error occurred</h1>

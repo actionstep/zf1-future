@@ -183,15 +183,6 @@ abstract class Zend_Uri
     }
 
     /**
-     * Zend_Uri and its subclasses cannot be instantiated directly.
-     * Use Zend_Uri::factory() to return a new Zend_Uri object.
-     *
-     * @param string $scheme         The scheme of the URI
-     * @param string $schemeSpecific The scheme-specific part of the URI
-     */
-    abstract protected function __construct($scheme, $schemeSpecific = '');
-
-    /**
      * Return a string representation of this URI.
      *
      * @return string

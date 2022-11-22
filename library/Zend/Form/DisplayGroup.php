@@ -1180,4 +1180,29 @@ class Zend_Form_DisplayGroup implements Iterator,Countable
 
         return $instance;
     }
+
+    // AS-Hack-begin
+    /**
+     * Custom Actionstep Hack
+     * @return $this
+     */
+    public function setLayoutOutline() {
+        $class = $this->getDecorator('Fieldset')->getOption('class');
+        $class .= ' as-form-group--outlined';
+        $this->getDecorator('Fieldset')->setOption('class', $class);
+        return $this;
+    }
+
+
+    /**
+     * Custom Actionstep Hack
+     * @return $this
+     */
+    public function setLayoutIndented() {
+        $class = $this->getDecorator('Fieldset')->getOption('class');
+        $class .= ' as-form-group--indented';
+        $this->getDecorator('Fieldset')->setOption('class', $class);
+        return $this;
+    }
+    // AS-Hack-end
 }

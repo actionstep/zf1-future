@@ -580,7 +580,7 @@ class Zend_Form_Element implements Zend_Validate_Interface
      * Set element value
      *
      * @param  mixed $value
-     * @return Zend_Form_Element
+     * @return $this
      */
     public function setValue($value)
     {
@@ -864,10 +864,10 @@ class Zend_Form_Element implements Zend_Validate_Interface
      *
      * @param  string $name
      * @param  mixed $value
-     * @return Zend_Form_Element
+     * @return $this
      * @throws Zend_Form_Exception for invalid $name values
      */
-    public function setAttrib($name, $value)
+    public function setAttrib($name, $value=null)
     {
         $name = (string) $name;
         if ('_' == $name[0]) {

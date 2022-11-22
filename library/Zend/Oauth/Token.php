@@ -175,11 +175,16 @@ abstract class Zend_Oauth_Token
         }
         return null;
     }
-
+    
+    public function getParams()
+    {
+        return $this->_params;
+    }
+    
     /**
      * Sets the value for a Token.
      *
-     * @param  string $token
+     * @param string $token
      * @return Zend_Oauth_Token
      */
     public function setToken($token)

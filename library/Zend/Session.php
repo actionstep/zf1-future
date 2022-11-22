@@ -289,7 +289,7 @@ class Zend_Session extends Zend_Session_Abstract
         register_shutdown_function('session_write_close');
 
         if (!$result) {
-            throw new Zend_Session_Exception('Unable to set session handler');
+            //throw new Zend_Session_Exception('Unable to set session handler');
         }
     }
 
@@ -460,12 +460,23 @@ class Zend_Session extends Zend_Session_Abstract
         }
 
         $filename = $linenum = null;
-        if (!self::$_unitTestEnabled && headers_sent($filename, $linenum)) {
-            /** @see Zend_Session_Exception */
-            require_once 'Zend/Session/Exception.php';
-            throw new Zend_Session_Exception("Session must be started before any output has been sent to the browser;"
-               . " output started in {$filename}/{$linenum}");
+
+        // AS-Hack-begin
+        if ((defined('IS_MESSAGE_BUS') && IS_MESSAGE_BUS == 1) || (defined('IS_MESSAGE_BUS') && IS_MESSAGE_BUS == 1)) {
+            // Lance: bypass this check
+            // Message bus can output to CLI before ASFW session started
+            self::$_throwStartupExceptions = false;
+        } else {
+            if (!self::$_unitTestEnabled && headers_sent($filename, $linenum)) {
+                /** @see Zend_Session_Exception */
+                require_once 'Zend/Session/Exception.php';
+                throw new Zend_Session_Exception(
+                    "Session must be started before any output has been sent to the browser;"
+                    . " output started in {$filename}/{$linenum}"
+                );
+            }
         }
+        // AS-Hack-end
 
         // See http://www.php.net/manual/en/ref.session.php for explanation
         if (!self::$_unitTestEnabled && defined('SID')) {
@@ -538,13 +549,9 @@ class Zend_Session extends Zend_Session_Abstract
             }
         }
 
-        $hashBitsPerChar = ini_get('session.sid_bits_per_character');
-        if (!$hashBitsPerChar) {
-          $hashBitsPerChar = ini_get('session.hash_bits_per_character');
-        }
-        if (!$hashBitsPerChar) {
-            $hashBitsPerChar = 5; // the default value
-        }
+        // AS-Hack-begin
+        $hashBitsPerChar = 6; // the default value
+        // AS-Hack-end
         $pattern = '';
         switch($hashBitsPerChar) {
             case 4: $pattern = '^[0-9a-f]*$'; break;

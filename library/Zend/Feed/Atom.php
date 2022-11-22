@@ -255,7 +255,7 @@ class Zend_Feed_Atom extends Zend_Feed_Abstract
      * The following nodes are constructed for each feed entry
      * <entry>
      *    <id>url to feed entry</id>
-     *    <title>entry title</title>
+     *    <title data-heap-redact-text="true">entry title</title>
      *    <updated>last update</updated>
      *    <link rel="alternate" href="url to feed entry" />
      *    <summary>short text</summary>

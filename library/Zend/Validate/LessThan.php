@@ -61,7 +61,7 @@ class Zend_Validate_LessThan extends Zend_Validate_Abstract
      * @param  mixed|Zend_Config $max
      * @throws Zend_Validate_Exception
      */
-    public function __construct($max)
+    public function __construct($max=0)
     {
         if ($max instanceof Zend_Config) {
             $max = $max->toArray();

@@ -32,7 +32,7 @@ require_once 'Zend/View/Helper/Placeholder/Container/Standalone.php';
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @method $this appendHttpEquiv($keyValue, $content, $conditionalHttpEquiv)
+ * @method $this appendHttpEquiv($keyValue, $content, $conditionalHttpEquiv=null)
  * @method $this appendName($keyValue, $content, $conditionalName)
  * @method $this appendProperty($property, $content, $modifiers = [])
  * @method $this offsetSetHttpEquiv($index, $keyValue, $content, $conditionalHttpEquiv)

@@ -162,14 +162,22 @@ class Zend_Mime_Decode
             }
         }
 
-        $headers = iconv_mime_decode_headers(
-            $headers, ICONV_MIME_DECODE_CONTINUE_ON_ERROR
+        // AS-Hack-begin
+        $decodedHeaders = iconv_mime_decode_headers(
+            $headers, ICONV_MIME_DECODE_STRICT
         );
 
-        if ($headers === false) {
+        if ($decodedHeaders === false) {
             // an error occurs during the decoding
-            return;
+            $decodedHeaders = iconv_mime_decode_headers(
+                $headers, ICONV_MIME_DECODE_CONTINUE_ON_ERROR
+            );
+            if ($decodedHeaders === false) {
+                return;
+            }
         }
+        // AS-Hack-end
+        $headers = $decodedHeaders;
 
         // normalize header names
         foreach ($headers as $name => $header) {
@@ -191,6 +199,12 @@ class Zend_Mime_Decode
                 $header
             ];
         }
+        // AS-Hack-begin
+        if (isset($headers['content-type']) && isset($headers['contenttype'])) {
+            // bug fix
+            unset($headers['contenttype']);
+        }
+        // AS-Hack-end
     }
 
     /**

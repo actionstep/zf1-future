@@ -308,6 +308,10 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
             $fault = new Zend_XmlRpc_Server_Exception($fault, $code);
         }
 
+        // Custom hack - add our error handler here
+        ActionStep_ErrorHandler::sendExceptionEmailToDev($fault, true, true);
+        ActionStep_ErrorHandler::sendExceptionToSentry($fault);
+
         return Zend_XmlRpc_Server_Fault::getInstance($fault);
     }
 
@@ -568,32 +572,6 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
         $argv     = $info->getInvokeArguments();
         if (0 < count($argv) && $this->sendArgumentsToAllMethods()) {
             $params = array_merge($params, $argv);
-        }
-
-        // Check calling parameters against signatures
-        $matched    = false;
-        $sigCalled  = $request->getTypes();
-
-        $sigLength  = count($sigCalled);
-        $paramsLen  = count($params);
-        if ($sigLength < $paramsLen) {
-            for ($i = $sigLength; $i < $paramsLen; ++$i) {
-                $xmlRpcValue = Zend_XmlRpc_Value::getXmlRpcValue($params[$i]);
-                $sigCalled[] = $xmlRpcValue->getType();
-            }
-        }
-
-        $signatures = $info->getPrototypes();
-        foreach ($signatures as $signature) {
-            $sigParams = $signature->getParameters();
-            if ($sigCalled === $sigParams) {
-                $matched = true;
-                break;
-            }
-        }
-        if (!$matched) {
-            require_once 'Zend/XmlRpc/Server/Exception.php';
-            throw new Zend_XmlRpc_Server_Exception('Calling parameters do not match signature', 623);
         }
 
         $return        = $this->_dispatch($info, $params);
