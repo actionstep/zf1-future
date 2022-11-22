@@ -148,7 +148,9 @@ class Zend_Mail_Part implements RecursiveIterator, Zend_Mail_Part_Interface
         } else if (isset($params['headers'])) {
             if (is_array($params['headers'])) {
                 $this->_headers = $params['headers'];
-                $this->_validateHeaders($this->_headers);
+                // AS-Hack-begin
+                //$this->_validateHeaders($this->_headers);
+                // AS-Hack-end
             } else {
                 if (!empty($params['noToplines'])) {
                     Zend_Mime_Decode::splitMessage($params['headers'], $this->_headers, $null, "\r\n");
@@ -599,6 +601,9 @@ class Zend_Mail_Part implements RecursiveIterator, Zend_Mail_Part_Interface
                 continue;
             }
 
+            // AS-Hack-begin
+            $value = str_replace("\r\n", "\r", $value);
+            // AS-Hack-end
             Zend_Mail_Header_HeaderValue::assertValid($value);
         }
     }

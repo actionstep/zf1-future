@@ -130,7 +130,9 @@ class Zend_Service_Amazon_S3 extends Zend_Service_Amazon_Abstract
             throw new Zend_Service_Amazon_S3_Exception("Bucket name \"$bucket\" must be between 3 and 255 characters long");
         }
 
-        if (preg_match('/[^a-z0-9\._-]/', $bucket)) {
+        // AS-Hack-begin
+        if (preg_match('/[^a-z0-9A-Z\._-]/', $bucket)) {
+        // AS-Hack-end
             /**
              * @see Zend_Service_Amazon_S3_Exception
              */

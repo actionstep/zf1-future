@@ -307,14 +307,36 @@ class Zend_Mail_Protocol_Smtp extends Zend_Mail_Protocol_Abstract
         $this->_send('DATA');
         $this->_expect(354, 120); // Timeout set for 2 minutes as per RFC 2821 4.5.3.2
 
-        foreach (explode(Zend_Mime::LINEEND, $data) as $line) {
+        /**
+         * Custom hack in place as Zend uses explode() on a 30MB string which creates an extra 150MB of memory usage! geesh!
+         * Instead of explode, we'll just use strpos + substr, which is actually faster and uses virtual no extra memory.
+         */
+        $start= 0;
+        $nextLineEnd = strpos($data, Zend_Mime::LINEEND, $start);
+
+        // AS-Hack-begin
+        while ($nextLineEnd !== false ) {
+            $line = substr($data, $start, $nextLineEnd-$start);
             if (strpos($line, '.') === 0) {
                 // Escape lines prefixed with a '.'
                 $line = '.' . $line;
             }
-
             $this->_send($line);
+
+            $start = $nextLineEnd + strlen(Zend_Mime::LINEEND);
+            $nextLineEnd = strpos($data, Zend_Mime::LINEEND, $start);
         }
+        if ($start < strlen($data)) {
+            $line = substr($data, $start);
+            if (!empty($line)) {
+                if (strpos($line, '.') === 0) {
+                    // Escape lines prefixed with a '.'
+                    $line = '.' . $line;
+                }
+                $this->_send($line);
+            }
+        }
+        // AS-Hack-end
 
         $this->_send('.');
         $this->_expect(250, 600); // Timeout set for 10 minutes as per RFC 2821 4.5.3.2

@@ -98,17 +98,26 @@ class Zend_Mail_Protocol_Pop3
             $port = $ssl == 'SSL' ? 995 : 110;
         }
 
-        $errno  =  0;
+        // AS-Hack-begin
+        $errno = 0;
         $errstr = '';
-        $this->_socket = @fsockopen($host, $port, $errno, $errstr, self::TIMEOUT_CONNECTION);
+        if (defined("ZEND_OVERRIDE_POP3_CONNECTION_TIMEOUT")) {
+            $timeout = ZEND_OVERRIDE_POP3_CONNECTION_TIMEOUT;
+        } else {
+            $timeout = self::TIMEOUT_CONNECTION;
+        }
+        $this->_socket = @fsockopen($host, $port, $errno, $errstr, $timeout);
         if (!$this->_socket) {
             /**
              * @see Zend_Mail_Protocol_Exception
              */
             require_once 'Zend/Mail/Protocol/Exception.php';
-            throw new Zend_Mail_Protocol_Exception('cannot connect to host; error = ' . $errstr .
-                                                   ' (errno = ' . $errno . ' )');
+            throw new Zend_Mail_Protocol_Exception(
+                'cannot connect to host; error = ' . $errstr .
+                ' (errno = ' . $errno . ' )'
+            );
         }
+        // AS-Hack-end
 
         $welcome = $this->readResponse();
 
@@ -187,7 +196,8 @@ class Zend_Mail_Protocol_Pop3
              * @see Zend_Mail_Protocol_Exception
              */
             require_once 'Zend/Mail/Protocol/Exception.php';
-            throw new Zend_Mail_Protocol_Exception('last request failed');
+            // Custom Hack - Add additional info to exception:
+            throw new Zend_Mail_Protocol_Exception('last request failed: ' . $status . ' ' . $message);
         }
 
         if ($multiline) {

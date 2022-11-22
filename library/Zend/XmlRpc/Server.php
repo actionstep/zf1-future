@@ -308,6 +308,10 @@ class Zend_XmlRpc_Server extends Zend_Server_Abstract
             $fault = new Zend_XmlRpc_Server_Exception($fault, $code);
         }
 
+        // Custom hack - add our error handler here
+        ActionStep_ErrorHandler::sendExceptionEmailToDev($fault, true, true);
+        ActionStep_ErrorHandler::sendExceptionToSentry($fault);
+
         return Zend_XmlRpc_Server_Fault::getInstance($fault);
     }
 

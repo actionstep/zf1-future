@@ -131,7 +131,7 @@ final class Zend_Mail_Header_HeaderValue
     {
         if (! self::isValid($value)) {
             require_once 'Zend/Mail/Exception.php';
-            throw new Zend_Mail_Exception('Invalid header value detected');
+            throw new Zend_Mail_Exception('Invalid header value detected: ' . $value);
         }
     }
 }
